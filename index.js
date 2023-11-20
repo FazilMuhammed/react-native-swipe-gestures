@@ -7,13 +7,13 @@ export const swipeDirections = {
   SWIPE_UP: "SWIPE_UP",
   SWIPE_DOWN: "SWIPE_DOWN",
   SWIPE_LEFT: "SWIPE_LEFT",
-  SWIPE_RIGHT: "SWIPE_RIGHT"
+  SWIPE_RIGHT: "SWIPE_RIGHT",
 };
 
 const swipeConfig = {
   velocityThreshold: 0.3,
   directionalOffsetThreshold: 80,
-  gestureIsClickThreshold: 5
+  gestureIsClickThreshold: 5,
 };
 
 function isValidSwipe(
@@ -39,16 +39,16 @@ class GestureRecognizer extends Component {
       onStartShouldSetPanResponder: shouldSetResponder,
       onMoveShouldSetPanResponder: shouldSetResponder,
       onPanResponderRelease: responderEnd,
-      onPanResponderTerminate: responderEnd
+      onPanResponderTerminate: responderEnd,
     });
   }
-  
+
   componentDidUpdate(prevProps) {
     if (this.props.config !== prevProps.config) {
       this.swipeConfig = Object.assign(swipeConfig, this.props.config);
     }
   }
-  
+
   _handleShouldSetPanResponder(evt, gestureState) {
     return (
       evt.nativeEvent.touches.length === 1 &&
@@ -58,8 +58,10 @@ class GestureRecognizer extends Component {
 
   _gestureIsClick(gestureState) {
     return (
-      Math.abs(gestureState.dx) < swipeConfig.gestureIsClickThreshold &&
-      Math.abs(gestureState.dy) < swipeConfig.gestureIsClickThreshold
+      Math.abs(gestureState.dx) < swipeConfig.gestureIsClickThreshold
+      //&& Math.abs(gestureState.dy) < swipeConfig.gestureIsClickThreshold
+      // Math.abs(gestureState.dx) < swipeConfig.gestureIsClickThreshold &&
+      // Math.abs(gestureState.dy) < swipeConfig.gestureIsClickThreshold
     );
   }
 
@@ -69,13 +71,8 @@ class GestureRecognizer extends Component {
   }
 
   _triggerSwipeHandlers(swipeDirection, gestureState) {
-    const {
-      onSwipe,
-      onSwipeUp,
-      onSwipeDown,
-      onSwipeLeft,
-      onSwipeRight
-    } = this.props;
+    const { onSwipe, onSwipeUp, onSwipeDown, onSwipeLeft, onSwipeRight } =
+      this.props;
     const { SWIPE_LEFT, SWIPE_RIGHT, SWIPE_UP, SWIPE_DOWN } = swipeDirections;
     onSwipe && onSwipe(swipeDirection, gestureState);
     switch (swipeDirection) {
